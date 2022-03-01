@@ -1,5 +1,6 @@
 package com.tirmizee.filter;
 
+import com.tirmizee.utils.AESUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
@@ -30,9 +31,7 @@ public class RequestBodyDecryptFilter extends OncePerRequestFilter {
 
         public RequestWrapper(HttpServletRequest request) throws IOException {
             super(request);
-//            bodyBytes = StreamUtils.copyToByteArray(request.getInputStream());
-            bodyBytes = "{\"name\":\"revise\"}".getBytes(StandardCharsets.UTF_8);
-            System.out.println(new String(bodyBytes));
+            bodyBytes = AESUtils.decrypt(new String(StreamUtils.copyToByteArray(request.getInputStream()))).getBytes(StandardCharsets.UTF_8);
         }
 
         @Override
